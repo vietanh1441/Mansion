@@ -54,14 +54,14 @@ public class Mole : MonoBehaviour {
         }
         else
         {
-            Block_Pos.pos[pos[0], pos[1]] = 0;
+            Block_Pos.make_available(pos[0], pos[1]);
             pos[1] = pos[1] - 1;
             transform.position = Vector3.Lerp(transform.position, Block_Pos.get_pos(pos[0], pos[1]), 1);
             //check for is grounded here
             //if grounded, do check lining up
             if (is_grounded())
             {
-                Block_Pos.pos[pos[0], pos[1]] = 1;
+                Block_Pos.make_occupy(pos[0], pos[1], transform);
                 Debug.Log("Check for lining up");
             }
         }

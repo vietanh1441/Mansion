@@ -4,7 +4,7 @@ using System.Collections;
 public class Block_Pos : MonoBehaviour {
 
    //Making a 2 dimensional array which return whether a pos is occupy or not
-    public static int[,] pos = new int[30,30];
+    public static Transform[,] pos = new Transform[30,30];
 
 
     //Initialize
@@ -14,7 +14,7 @@ public class Block_Pos : MonoBehaviour {
         for (int i = 0; i < 30; i++)
         {
             for (int j = 0; j < 30; j++)
-                pos[i, j] = 0;
+                pos[i, j] = null;
         }
     }
 
@@ -54,21 +54,24 @@ public class Block_Pos : MonoBehaviour {
     //check if it is occupy by
     //coordinate
 
-    public static void make_occupy(int x, int y)
+    public static void make_occupy(int x, int y, Transform transform)
     {
-        pos[x, y] = 1;
+        pos[x, y] = transform;
         /*Debug.Log("Make this pos 1");
         Debug.Log(x);
         Debug.Log(y);
         Debug.Log(pos[x, y]);*/
     }
 
-
+    public static void make_available(int x, int y)
+    {
+        pos[x, y] = null;
+    }
     public static bool is_occupy(int x, int y)
     {
         if (y == -1)
             return true;
-        else if (pos[x, y] == 1)
+        else if (pos[x, y] != null)
         {
           //  Debug.Log("TOuch");
             return true;

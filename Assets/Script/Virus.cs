@@ -16,7 +16,7 @@ public class Virus : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Block_Pos.make_occupy(pos[0], pos[1]);
+        Block_Pos.make_occupy(pos[0], pos[1], transform);
 	}
 
 

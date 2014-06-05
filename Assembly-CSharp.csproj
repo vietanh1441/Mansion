@@ -46,10 +46,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Block_Pos.cs" />
-     <Compile Include="Assets\Medicine.cs" />
-     <Compile Include="Assets\Mole.cs" />
-     <Compile Include="Assets\Virus.cs" />
+     <Compile Include="Assets\Script\Block_Pos.cs" />
+     <Compile Include="Assets\Script\Central.cs" />
+     <Compile Include="Assets\Script\Medicine.cs" />
+     <Compile Include="Assets\Script\Mole.cs" />
+     <Compile Include="Assets\Script\Virus.cs" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

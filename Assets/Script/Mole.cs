@@ -5,17 +5,49 @@ public class Mole : MonoBehaviour {
 
     public static float speed = 0.5f;
     public static bool isGrounded = false;
-    
+    private bool enable = false;
+    private bool control_enable = false;
+    private int[] pos = new int[2];
+    private int color = 0;
 
-    public static int[] pos = new int[2];
+    void Set_x(int x)
+    {
+        pos[0] = x;
+    }
 
+    void Set_y(int y)
+    {
+        pos[1] = y;
+    }
+    void Set_type(int z)
+    {
+        color = z;
+    }
+    void Set_enable(int a)
+    {
+        enable = true;
+    }
     void Start()
     {
-         
-        pos[0] = 10;
-        pos[1] = 10;
+
+        if (color == 0)
+        {
+            gameObject.renderer.material.color = Color.white;
+            gameObject.tag = "White";
+        }
+        if (color == 1)
+        {
+            gameObject.renderer.material.color = Color.red;
+            gameObject.tag = "Red";
+        }
+        if (color == 2)
+        {
+            gameObject.renderer.material.color = Color.green;
+            gameObject.tag = "Green";
+        }
         transform.position = Vector3.Lerp(transform.position, Block_Pos.get_pos(pos[0], pos[1]), 1);
-        InvokeRepeating("do_work", 0, 2f);
+        Block_Pos.make_occupy(pos[0], pos[1], gameObject);
+        
     }
 
     //Fixed update every 1 second, move down a pos
@@ -24,22 +56,49 @@ public class Mole : MonoBehaviour {
 
     void Update()
     {
+        
+        if (enable)
+        {
+            //Debug.Log("call do work");
+            control_enable = true;
+            call_for_work();
+            enable = false;
+        }
+        if (control_enable)
+            control();
+    }
+
+    public void call_for_work()
+    {
+        InvokeRepeating("do_work", 0, 0.5f);
+    }
+
+    void control()
+    {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             //Need to check for avaible
-            pos[0] = pos[0] - 1;
-            transform.position = Vector3.Lerp(transform.position, Block_Pos.get_pos(pos[0], pos[1]), 1);
+            if (!Block_Pos.is_occupy(pos[0] - 1, pos[1]))
+            {
+                pos[0] = pos[0] - 1;
+                transform.position = Vector3.Lerp(transform.position, Block_Pos.get_pos(pos[0], pos[1]), 1);
+            }
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             //Need to check for avaible
-            pos[0] = pos[0] + 1;
-            transform.position = Vector3.Lerp(transform.position, Block_Pos.get_pos(pos[0], pos[1]), 1);
+            if (!Block_Pos.is_occupy(pos[0] + 1, pos[1]))
+            {
+                pos[0] = pos[0] + 1;
+                transform.position = Vector3.Lerp(transform.position, Block_Pos.get_pos(pos[0], pos[1]), 1);
+            }
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             pos[1] = Block_Pos.check_down(pos[0], pos[1]);
-            transform.position = Vector3.Lerp(transform.position, Block_Pos.get_pos(pos[0], pos[1]), 1);
+            transform.position = Vector3.Lerp(transform.position, Block_Pos.get_pos(pos[0], pos[1]), 2f);
+            landing(pos[0], pos[1], gameObject);
+            
         }
     }
 
@@ -49,8 +108,8 @@ public class Mole : MonoBehaviour {
         //Debug.Log(pos[1]);
         if (is_grounded())
         {
-            
-            Debug.Log("Nothing");
+
+            landing(pos[0], pos[1], gameObject);
         }
         else
         {
@@ -61,9 +120,19 @@ public class Mole : MonoBehaviour {
             //if grounded, do check lining up
             if (is_grounded())
             {
-                Block_Pos.make_occupy(pos[0], pos[1], transform);
-                Debug.Log("Check for lining up");
+                landing(pos[0], pos[1], gameObject);
             }
+        }
+    }
+
+    void landing(int x, int y, GameObject gameobj)
+    {
+        Block_Pos.make_occupy(pos[0], pos[1], gameobj);
+        Block_Pos.check_line_up(pos[0], pos[1]);
+        if (control_enable)
+        {
+            Central.signal = true;
+            control_enable = false;
         }
     }
 

@@ -20,8 +20,8 @@ public class Virus : MonoBehaviour {
     {
         if (color == 0)
         {
-            gameObject.renderer.material.color = Color.white;
-            gameObject.tag = "White";
+            gameObject.renderer.material.color = Color.yellow;
+            gameObject.tag = "Yellow";
         }
         if (color == 1)
         {

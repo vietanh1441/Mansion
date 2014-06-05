@@ -32,8 +32,8 @@ public class Mole : MonoBehaviour {
 
         if (color == 0)
         {
-            gameObject.renderer.material.color = Color.white;
-            gameObject.tag = "White";
+            gameObject.renderer.material.color = Color.yellow;
+            gameObject.tag = "Yellow";
         }
         if (color == 1)
         {
@@ -93,14 +93,24 @@ public class Mole : MonoBehaviour {
                 transform.position = Vector3.Lerp(transform.position, Block_Pos.get_pos(pos[0], pos[1]), 1);
             }
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             pos[1] = Block_Pos.check_down(pos[0], pos[1]);
             transform.position = Vector3.Lerp(transform.position, Block_Pos.get_pos(pos[0], pos[1]), 2f);
-            landing(pos[0], pos[1], gameObject);
-            
+            landing(pos[0], pos[1], gameObject);   
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (!Block_Pos.is_occupy(pos[0], pos[1] - 1))
+            {
+                pos[1] = pos[1] - 1;
+                transform.position = Vector3.Lerp(transform.position, Block_Pos.get_pos(pos[0], pos[1]), 1);
+            }
+            if(Block_Pos.is_occupy(pos[0], pos[1] - 1))
+                landing(pos[0], pos[1], gameObject);
         }
     }
+
 
     void do_work()
     {

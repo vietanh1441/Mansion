@@ -10,6 +10,11 @@ public class Central : MonoBehaviour {
 	// Use this for initialization
     void Awake()
     {
+       list = new List<GameObject>();
+    }
+
+    void Start()
+    {
         Generate_mole();
         Generate_mole();
         Generate_mole();
@@ -17,12 +22,8 @@ public class Central : MonoBehaviour {
         for (int i = 0; i < 5; i++)
         {
             Generate_virus();
-            
-        }
-    }
 
-    void Start()
-    {
+        }
         signal = true;
     }
 
@@ -64,7 +65,7 @@ public class Central : MonoBehaviour {
         hmm.SendMessage("Set_y", y);
         z = Random.Range(0, 3);
         hmm.SendMessage("Set_type", z);
-        
+        Block_Pos.make_occupy(x, y, hmm);
     }
 
     void Generate_mole()
